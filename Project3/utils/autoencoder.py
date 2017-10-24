@@ -148,7 +148,7 @@ class DenoisingAutoencoder(object):
 
             if i % 5 == 0:
                 tr_err = self._run_train_step(train_set, corruption_ratio, i)
-                print tr_err
+                print "\n Training error - " +str(tr_err) +'\n'
                 if validation_set is not None:
                     err = self._run_validation_error_and_summaries(i, validation_set)
                     err.append(tr_err)
@@ -224,7 +224,7 @@ class DenoisingAutoencoder(object):
         self.tf_summary_writer.add_summary(summary_str, epoch)
 
         if self.verbose == 1:
-            print("Validation cost at step %s: %s" % (epoch, err))
+            print(" Validation cost at step %s: %s \n" % (epoch, err))
         return [epoch, err]
 
     def _build_model(self, n_features):
