@@ -162,7 +162,81 @@ if not FLAGS.use_tf_flags:
                 dae.fit(trX, val_dict, teX, restore_previous_model=False) 
                 dae.reset()
                 
-       
+        # =============================================================================
+        #         Testing optimizers
+        # =============================================================================        
+        elif arg == 'opt':
+            feed_list = ['gradient_descent', 'ada_grad', 'momentum', 'adam']
+            for i in feed_list:
+                print "\n Evaluating for optimizer=" +str(i)
+                t = arg + '=' + str(i)
+                dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
+                         n_components=256, main_dir='hidden_layers/', 
+                         enc_act_func='sigmoid', dec_act_func='none', 
+                         loss_func='mean_squared', num_epochs=31, batch_size=12, 
+                         dataset='cifar10', xavier_init=1, opt=i, 
+                         learning_rate=0.001, momentum=0.5, corr_type='gaussian',
+                         corr_frac=0.3, verbose=1, seed=-1)    
+                dae.fit(trX, val_dict, teX, restore_previous_model=False) 
+                dae.reset()
+
+                  
+        # =============================================================================
+        #         Testing momentum
+        # =============================================================================        
+        elif arg == 'momentum':
+            feed_list = [0.5,0.6,0.7,0.8,0.9]
+            for i in feed_list:
+                print "\n Evaluating for optimizer=" +str(i)
+                t = arg + '=' + str(i)
+                dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
+                         n_components=256, main_dir='hidden_layers/', 
+                         enc_act_func='sigmoid', dec_act_func='none', 
+                         loss_func='mean_squared', num_epochs=31, batch_size=12, 
+                         dataset='cifar10', xavier_init=1, opt='momentum', 
+                         learning_rate=0.001, momentum=i, corr_type='gaussian',
+                         corr_frac=0.3, verbose=1, seed=-1)    
+                dae.fit(trX, val_dict, teX, restore_previous_model=False) 
+                dae.reset()
+
+                  
+        # =============================================================================
+        #         Testing corruption types
+        # =============================================================================        
+        elif arg == 'corr':
+            feed_list = ['masking', 'salt_and_pepper', 'gaussian', 'none']
+            for i in feed_list:
+                print "\n Evaluating for corruption=" +str(i)
+                t = arg + '=' + str(i)
+                dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
+                         n_components=256, main_dir='hidden_layers/', 
+                         enc_act_func='sigmoid', dec_act_func='none', 
+                         loss_func='mean_squared', num_epochs=31, batch_size=12, 
+                         dataset='cifar10', xavier_init=1, opt='adam', 
+                         learning_rate=0.001, momentum=0.5, corr_type=i,
+                         corr_frac=0.3, verbose=1, seed=-1)    
+                dae.fit(trX, val_dict, teX, restore_previous_model=False) 
+                dae.reset()
+      
+        # =============================================================================
+        #         Testing corruption ratio
+        # =============================================================================        
+        elif arg == 'ratio':
+            feed_list = [x/10.0 for x in range(1,11)]
+            for i in feed_list:
+                print "\n Evaluating for corruption=" +str(i)
+                t = arg + '=' + str(i)
+                dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
+                         n_components=256, main_dir='hidden_layers/', 
+                         enc_act_func='sigmoid', dec_act_func='none', 
+                         loss_func='mean_squared', num_epochs=31, batch_size=12, 
+                         dataset='cifar10', xavier_init=1, opt='adam', 
+                         learning_rate=0.001, momentum=0.5, corr_type='gaussian',
+                         corr_frac=i, verbose=1, seed=-1)    
+                dae.fit(trX, val_dict, teX, restore_previous_model=False) 
+                dae.reset()
+
+           
 
 elif FLAGS.use_tf_flags: 
 

@@ -44,7 +44,7 @@ def load_mnist_dataset(mode='supervised', one_hot=True):
         return trX, vlX, teX
 
 
-def load_cifar10_dataset(cifar_dir, mode='supervised'):
+def load_cifar10_dataset(cifar_dir, normalize=True, mode='supervised'):
     """Load the cifar10 dataset.
     :param cifar_dir: path to the dataset directory
         (cPicle format from: https://www.cs.toronto.edu/~kriz/cifar.html)
@@ -79,10 +79,10 @@ def load_cifar10_dataset(cifar_dir, mode='supervised'):
 
             if fn.startswith('test'):
                 teX = data_batch['data']
-                teY = data_batch['labels']
-
-    trX = trX.astype(np.float32) / 255.
-    teX = teX.astype(np.float32) / 255.
+                teY = np.array(data_batch['labels'])
+    if normalize==True:
+        trX = trX.astype(np.float32) / 255.
+        teX = teX.astype(np.float32) / 255.
 
     if mode == 'supervised':
         return trX, trY, teX, teY

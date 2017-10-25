@@ -1,6 +1,7 @@
 import pickle
 import tensorflow as tf
 import sys
+import os
 sys.path.insert(0, '../utils/')
 import numpy as np
 
@@ -14,18 +15,18 @@ if sys.argv[1] =='dae':
     dae = DAE(model_name='dae_svm', pickle_name='svm', test_name='svm',
                  n_components=256, main_dir='dae/', 
                  enc_act_func='sigmoid', dec_act_func='none', 
-                 loss_func='mean_squared', num_epochs=6, batch_size=20, 
-                 dataset='cifar10', xavier_init=1, opt='momentum', 
-                 learning_rate=0.001, momentum=0.5, corr_type='gaussian',
-                 corr_frac=0.3, verbose=1, seed=1)    
+                 loss_func='mean_squared', num_epochs=50, batch_size=20, 
+                 dataset='cifar10', xavier_init=1, opt='adam', 
+                 learning_rate=0.0001, momentum=0.5, corr_type='gaussian',
+                 corr_frac=0.5, verbose=1, seed=1)    
     
     trX, trY, teX, teY = datasets.load_cifar10_dataset('../cifar-10-batches-py/', mode='supervised')
     val_dict = {}
     dae.fit(trX, val_dict, teX, restore_previous_model=True) 
     
     #dae.load_model(256, 'models/dae/dae_svm')
-    dae_svm_train = dae.transform(trX, name='dae_svm_train', save=True)
-    dae_svm_test = dae.transform(teX, name='dae_svm_test', save=True)
+    dae_svm_train = dae.transform(trX, name='dae_svm_train_na', save=True)
+    dae_svm_test = dae.transform(teX, name='dae_svm_test_na', save=True)
 
     
 elif sys.argv[1]=='cnn':
@@ -45,3 +46,22 @@ elif sys.argv[1]=='cnn':
     for i in range(len(test_list)):
         print "\n Batch" + str(i)
         cnn.transform(test_list[i], name='cnn_test' + str(i), save=True)
+
+
+def combine():
+    os.chdir('/home/momi/Documents/599/Project3/2/data/cnn/')
+    files = os.listdir(os.getcwd())
+    files.sort()
+    train = []
+    test = []
+    
+    for i in [x for x in files if 'test' in x]:
+        test.append(np.load(i))
+    np.save('test_cnn', np.vstack(test))   
+    del test
+    
+    for i in [x for x in files if 'train' in x]:
+        train.append(np.load(i)[:5])
+    np.save('train_cnn', np.vstack(train))
+    del train
+       

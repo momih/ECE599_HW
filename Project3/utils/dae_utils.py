@@ -1,7 +1,7 @@
 from scipy import misc
 import tensorflow as tf
 import numpy as np
-from noise import random_noise
+from skimage.util import random_noise
 
 # ############# #
 #   Utilities   #

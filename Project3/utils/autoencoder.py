@@ -143,6 +143,7 @@ class DenoisingAutoencoder(object):
         corruption_ratio = np.round(self.corr_frac * train_set.shape[1]).astype(np.int)
 
         for i in range(self.num_epochs):
+            print "Epoch - " + str(i)
             if i % 5 != 0:
                 self._run_train_step(train_set, corruption_ratio, i)
 
