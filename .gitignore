@@ -43,3 +43,9 @@ Project2/2/model_110.ckpt-79999
 Project2/1/test.py
 Project3/2/.spyproject/
 Project3/2/*.npy
+Project3/3/fc1
+Project3/3/fc2
+Project3/3/logs/
+Project3/3/models/
+Project3/3/pickled/
+

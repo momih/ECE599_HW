@@ -236,7 +236,25 @@ if not FLAGS.use_tf_flags:
                 dae.fit(trX, val_dict, teX, restore_previous_model=False) 
                 dae.reset()
 
-           
+    
+        # =============================================================================
+        #         Testing loss function
+        # =============================================================================        
+        elif arg == 'loss':
+            feed_list = ['cross_entropy', 'mean_squared']
+            for i in feed_list:
+                print "\n Evaluating for cost=" +str(i)
+                t = arg + '=' + str(i)
+                dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
+                         n_components=256, main_dir='hidden_layers/', 
+                         enc_act_func='relu', dec_act_func='sigmoid', 
+                         loss_func=i, num_epochs=31, batch_size=12, 
+                         dataset='cifar10', xavier_init=1, opt='gradient_descent', 
+                         learning_rate=0.001, momentum=0.5, corr_type='gaussian',
+                         corr_frac=0.4, verbose=1, seed=-1)    
+                dae.fit(trX, val_dict, teX, restore_previous_model=False) 
+                dae.reset()
+       
 
 elif FLAGS.use_tf_flags: 
 

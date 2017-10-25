@@ -32,18 +32,46 @@ def resize(arr, n):
 
 resized_train = resize(images_train, 50000)       
 resized_test = resize(images_test, 10000)
+del images_test, images_train
+
+%%
+ =============================================================================
+       FC_1
+ =============================================================================
+if sys.argv[1]=='fc1':
+    dae = DAE(model_name='fc1', pickle_name='fc1', test_name='fc1',
+             n_components=1024, main_dir='fc1/', 
+             enc_act_func='sigmoid', dec_act_func='none', 
+             loss_func='mean_squared', num_epochs=50, batch_size=20, 
+             dataset='cifar10', xavier_init=1, opt='adam', 
+             learning_rate=0.00001, momentum=0.5, corr_type='gaussian',
+             corr_frac=0.2, verbose=1, seed=1)
+    val_dict = {}
+    dae.fit(resized_train, val_dict, resized_test, restore_previous_model=False) 
+        
+    fc1 = dae.get_model_parameters()
+    with open('fc1', 'wb') as f:
+       pickle.dump(fc1, f)
+
 #%%
 # =============================================================================
-#       FC_1
+#       FC_2
 # =============================================================================
+elif sys.argv[1]=='fc2':
+    with open('fc1','rb') as f:
+        fc1 = pickle.load(f)
+        
+    input_data = fc1['enc_w']    
+    dae = DAE(model_name='fc2', pickle_name='fc2', test_name='fc2',
+             n_components=10, main_dir='fc2/', 
+             enc_act_func='sigmoid', dec_act_func='none', 
+             loss_func='mean_squared', num_epochs=50, batch_size=20, 
+             dataset='cifar10', xavier_init=1, opt='adam', 
+             learning_rate=0.00001, momentum=0.5, corr_type='gaussian',
+             corr_frac=0.2, verbose=1, seed=1)
+    val_dict = {}
+    dae.fit(resized_train, val_dict, resized_test, restore_previous_model=False) 
+    fc2 = dae.get_model_parameters()
+    with open('fc2', 'wb') as f:
+       pickle.dump(fc2, f)
 
-dae = DAE(model_name='fc1', pickle_name='fc1', test_name='fc1',
-         n_components=4096, main_dir='fc1/', 
-         enc_act_func='sigmoid', dec_act_func='none', 
-         loss_func='mean_squared', num_epochs=6, batch_size=20, 
-         dataset='cifar10', xavier_init=1, opt='adam', 
-         learning_rate=0.0001, momentum=0.5, corr_type='gaussian',
-         corr_frac=0.5, verbose=1, seed=1)
-val_dict = {}
-dae.fit(resized_train, val_dict, resized_test, restore_previous_model=False) 
-    
