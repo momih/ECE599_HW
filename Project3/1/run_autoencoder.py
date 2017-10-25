@@ -1,6 +1,6 @@
 import tensorflow as tf
 import sys
-sys.path.insert(0, '/home/momi/Documents/599/Project3/utils/')
+sys.path.insert(0, '../utils/')
 
 from autoencoder import DenoisingAutoencoder as DAE
 import datasets
