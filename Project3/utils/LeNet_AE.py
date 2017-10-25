@@ -26,8 +26,6 @@ class LeNetAE(object):
         self.model_name= model_name
         self.init_dev= init_dev
         self.drop = drop
-#        self.fc1 = fc1
-#        self.fc2 = fc2
         self.build_graph()
         self.initialize()
 
@@ -54,22 +52,22 @@ class LeNetAE(object):
         self.W_fc1 = self.weight_variable([8*8 * 64, 1024], name='W_fc1',
                                      decay=self.decay_w)
 
-        b_fc1 = self.bias_variable([1024])
+        self.b_fc1 = self.bias_variable([1024])
 
         self.h_pool2_flat = tf.reshape(h_pool2, [-1, 8*8*64])
-        h_fc1 = tf.nn.relu(tf.matmul(self.h_pool2_flat, self.W_fc1) + b_fc1)
+        h_fc1 = tf.nn.relu(tf.matmul(self.h_pool2_flat, self.W_fc1) + self.b_fc1)
 
         # dropout regularization
         self.keep_prob = tf.placeholder(tf.float32)
         h_fc1_drop = tf.nn.dropout(h_fc1, self.keep_prob)
 
         # linear classifier
-        W_fc2 = self.weight_variable([1024, 10], name='W_fc2',
+        self.W_fc2 = self.weight_variable([1024, 10], name='W_fc2',
                                      decay=self.decay_w)
 
-        b_fc2 = self.bias_variable([10])
+        self.b_fc2 = self.bias_variable([10])
 
-        self.y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+        self.y_conv = tf.matmul(h_fc1_drop, self.W_fc2) + self.b_fc2
         self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.y_, logits=self.y_conv))
         _ = tf.summary.scalar("cross_entropy", self.cross_entropy)
         # Select optimizer
