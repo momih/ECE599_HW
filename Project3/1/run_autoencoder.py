@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, '../utils/')
 
 from autoencoder import DenoisingAutoencoder as DAE
-import datasets
+import getdata
 
 # #################### #
 #   Flags definition   #
@@ -51,7 +51,7 @@ assert FLAGS.loss_func in ['cross_entropy', 'mean_squared']
 assert FLAGS.opt in ['gradient_descent', 'ada_grad', 'momentum', 'adam']
 
 
-trX, teX = datasets.load_cifar10_dataset(FLAGS.cifar_dir, mode='unsupervised')
+trX, teX = getdata.load_cifar10_dataset(FLAGS.cifar_dir, mode='unsupervised')
 vlX = teX[:5000]  # Validation set is the first half of the test set
 
 if len(sys.argv) == 1:
@@ -81,11 +81,11 @@ if not FLAGS.use_tf_flags:
                 t = 'hlayer=' + str(i)
                 dae = DAE(model_name='hidden_layers', pickle_name=arg, test_name=t,
                          n_components=i, main_dir='hidden_layers/', 
-                         enc_act_func='tanh', dec_act_func='none', 
-                         loss_func='mean_squared', num_epochs=16, batch_size=10, 
+                         enc_act_func='sigmoid', dec_act_func='sigmoid', 
+                         loss_func='cross_entropy', num_epochs=10, batch_size=10, 
                          dataset='cifar10', xavier_init=1, opt='adam', 
                          learning_rate=0.01, momentum=0.5, corr_type='gaussian',
-                         corr_frac=0.3, verbose=1, seed=-1)
+                         corr_frac=0.6, verbose=1, seed=-1)
                 dae.fit(trX, val_dict, teX, restore_previous_model=False)
                 dae.reset()
         
@@ -247,9 +247,9 @@ if not FLAGS.use_tf_flags:
                 t = arg + '=' + str(i)
                 dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
                          n_components=256, main_dir='hidden_layers/', 
-                         enc_act_func='relu', dec_act_func='sigmoid', 
+                         enc_act_func='sigmoid', dec_act_func='sigmoid', 
                          loss_func=i, num_epochs=31, batch_size=12, 
-                         dataset='cifar10', xavier_init=1, opt='gradient_descent', 
+                         dataset='cifar10', xavier_init=1, opt='adam', 
                          learning_rate=0.001, momentum=0.5, corr_type='gaussian',
                          corr_frac=0.4, verbose=1, seed=-1)    
                 dae.fit(trX, val_dict, teX, restore_previous_model=False) 

@@ -1,10 +1,17 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
 from tensorflow.python.framework import dtypes
 from tensorflow.python.framework import random_seed
-import cPickle
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+    
 import numpy
+import os
 
 
 class DataSet(object):
@@ -101,7 +108,7 @@ def get_train():
     # Reading training images
     for i in range(1, 6):
         with open('../cifar-10-batches-py/data_batch_' + str(i), 'rb') as f:
-            cifar_dict = cPickle.load(f)
+            cifar_dict = pickle.load(f)
         if i == 1:
             images = cifar_dict['data'].reshape(10000, 3, 1024)
             labels = one_hot(cifar_dict['labels'])
@@ -116,7 +123,54 @@ def get_train():
 def get_test():
 
     with open('../cifar-10-batches-py/test_batch', 'rb') as f:
-            cifar_dict = cPickle.load(f)
+            cifar_dict = pickle.load(f)
     images = cifar_dict['data'].reshape(10000, 3, 1024)
     labels = one_hot(cifar_dict['labels'])
     return DataSet(images, labels)
+
+
+def load_cifar10_dataset(cifar_dir, normalize=True, mode='supervised'):
+    """Load the cifar10 dataset.
+    :param cifar_dir: path to the dataset directory
+        (cPicle format from: https://www.cs.toronto.edu/~kriz/cifar.html)
+    :param mode: 'supervised' or 'unsupervised' mode
+    :return: train, test data:
+            for (X, y) if 'supervised',
+            for (X) if 'unsupervised'
+    """
+    # Training set
+    trX = None
+    trY = numpy.array([])
+
+    # Test set
+    teX = numpy.array([])
+    teY = numpy.array([])
+
+    for fn in os.listdir(cifar_dir):
+
+        if not fn.startswith('batches') and not fn.startswith('readme'):
+            fo = open(os.path.join(cifar_dir, fn), 'rb')
+            data_batch = pickle.load(fo)
+            fo.close()
+
+            if fn.startswith('data'):
+
+                if trX is None:
+                    trX = data_batch['data']
+                    trY = data_batch['labels']
+                else:
+                    trX = numpy.concatenate((trX, data_batch['data']), axis=0)
+                    trY = numpy.concatenate((trY, data_batch['labels']), axis=0)
+
+            if fn.startswith('test'):
+                teX = data_batch['data']
+                teY = numpy.array(data_batch['labels'])
+    if normalize==True:
+        trX = trX.astype(numpy.float32) / 255.
+        teX = teX.astype(numpy.float32) / 255.
+
+    if mode == 'supervised':
+        return trX, trY, teX, teY
+
+    elif mode == 'unsupervised':
+        return trX, teX

@@ -34,15 +34,15 @@ class LeNetAE(object):
         self.y_ = tf.placeholder(tf.float32, shape=[None, 10])
 
         # define conv-layer variables
-        W_conv1 = self.weight_variable([5, 5, 3, 32])
+        self.W_conv1 = self.weight_variable([5, 5, 3, 32])
         # first conv-layer has 32 kernels, size=5
         b_conv1 = self.bias_variable([32])
         W_conv2 = self.weight_variable([5, 5, 32, 64])
         b_conv2 = self.bias_variable([64])
 
         x_image = tf.reshape(self.x, [-1, 32, 32, 3])
-        h_conv1 = tf.nn.relu(self.conv2d(x_image, W_conv1) + b_conv1)
-        h_pool1 = self.max_pool_2x2(h_conv1)
+        self.h_conv1 = tf.nn.relu(self.conv2d(x_image, self.W_conv1) + b_conv1)
+        h_pool1 = self.max_pool_2x2(self.h_conv1)
         h_conv2 = tf.nn.relu(self.conv2d(h_pool1, W_conv2) + b_conv2)
         h_pool2 = self.max_pool_2x2(h_conv2)
 
@@ -69,7 +69,7 @@ class LeNetAE(object):
 
         self.y_conv = tf.matmul(h_fc1_drop, self.W_fc2) + self.b_fc2
         self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=self.y_, logits=self.y_conv))
-        _ = tf.summary.scalar("cross_entropy", self.cross_entropy)
+ #       _ = tf.summary.scalar("cross_entropy", self.cross_entropy)
         # Select optimizer
         if self.decay_lr:
             global_step = tf.Variable(0, trainable=False)

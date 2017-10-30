@@ -1,4 +1,3 @@
-import tensorflow as tf
 import sys
 sys.path.insert(0, '../utils/')
 
@@ -9,6 +8,7 @@ import pickle
 cifar_train = getdata.get_train()
 cifar_test = getdata.get_test()
 acc_list = []
+
 if sys.argv[1]=='train':
     if sys.argv[2]=='rms':
         cnn = LeNet(lr=0.001, epochs=101, batch_size=256, train_data=cifar_train,

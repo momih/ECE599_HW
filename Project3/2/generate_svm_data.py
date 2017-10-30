@@ -1,5 +1,3 @@
-import pickle
-import tensorflow as tf
 import sys
 import os
 sys.path.insert(0, '../utils/')
@@ -9,7 +7,6 @@ import getdata
 from LeNet5 import LeNet
 
 from autoencoder import DenoisingAutoencoder as DAE
-import datasets
 
 if sys.argv[1] =='dae':
     dae = DAE(model_name='dae_svm', pickle_name='svm', test_name='svm',
@@ -20,7 +17,7 @@ if sys.argv[1] =='dae':
                  learning_rate=0.0001, momentum=0.5, corr_type='gaussian',
                  corr_frac=0.5, verbose=1, seed=1)    
     
-    trX, trY, teX, teY = datasets.load_cifar10_dataset('../cifar-10-batches-py/', mode='supervised')
+    trX, trY, teX, teY = getdata.load_cifar10_dataset('../cifar-10-batches-py/', mode='supervised')
     val_dict = {}
     dae.fit(trX, val_dict, teX, restore_previous_model=True) 
     

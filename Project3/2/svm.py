@@ -3,13 +3,13 @@ import numpy as np
 import sys
 sys.path.insert(0, '../utils/')
 from sklearn import svm
-import datasets
+import getdata
 from sklearn.metrics import accuracy_score as acc
 from sklearn.model_selection import GridSearchCV
 import pandas as pd
 from sklearn.preprocessing import normalize
 #%%
-xtr, label_train, xts, label_test = datasets.load_cifar10_dataset('../cifar-10-batches-py/', mode='supervised')
+xtr, label_train, xts, label_test = getdata.load_cifar10_dataset('../cifar-10-batches-py/', mode='supervised')
 parameters = { 'C':[1,2,3,4,5,6,7,8,9,10], 'gamma': 
               [0.01,0.02,0.03,0.04,0.05,0.10,0.2,0.3,0.4,0.5]}
 del xtr, xts
