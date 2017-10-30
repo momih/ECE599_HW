@@ -82,7 +82,7 @@ if not FLAGS.use_tf_flags:
                 dae = DAE(model_name='hidden_layers', pickle_name=arg, test_name=t,
                          n_components=i, main_dir='hidden_layers/', 
                          enc_act_func='sigmoid', dec_act_func='sigmoid', 
-                         loss_func='cross_entropy', num_epochs=10, batch_size=10, 
+                         loss_func='mean_squared', num_epochs=10, batch_size=10, 
                          dataset='cifar10', xavier_init=1, opt='adam', 
                          learning_rate=0.01, momentum=0.5, corr_type='gaussian',
                          corr_frac=0.6, verbose=1, seed=-1)
@@ -246,12 +246,12 @@ if not FLAGS.use_tf_flags:
                 print "\n Evaluating for cost=" +str(i)
                 t = arg + '=' + str(i)
                 dae = DAE(model_name=arg + '_model', pickle_name=arg, test_name=t,
-                         n_components=256, main_dir='hidden_layers/', 
+                         n_components=512, main_dir='hidden_layers/', 
                          enc_act_func='sigmoid', dec_act_func='sigmoid', 
-                         loss_func=i, num_epochs=31, batch_size=12, 
+                         loss_func=i, num_epochs=6, batch_size=50, 
                          dataset='cifar10', xavier_init=1, opt='adam', 
-                         learning_rate=0.001, momentum=0.5, corr_type='gaussian',
-                         corr_frac=0.4, verbose=1, seed=-1)    
+                         learning_rate=0.001, momentum=0.5, corr_type='masking',
+                         corr_frac=0.2, verbose=1, seed=17)    
                 dae.fit(trX, val_dict, teX, restore_previous_model=False) 
                 dae.reset()
        

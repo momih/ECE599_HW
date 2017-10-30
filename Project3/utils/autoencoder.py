@@ -180,7 +180,7 @@ class DenoisingAutoencoder(object):
             x_batch, x_corr_batch = zip(*batch)
             tr_feed = {self.input_data: x_batch, self.input_data_corr: x_corr_batch}
             self.tf_session.run(self.train_step, feed_dict=tr_feed)
-            if i % 5==0:
+            if i % 5 == 0:
                 return self.tf_session.run(self.cost, feed_dict=tr_feed)
 
     def _corrupt_input(self, data, v):
