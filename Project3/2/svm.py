@@ -7,14 +7,14 @@ from sklearn.preprocessing import normalize
 import pickle
 PATHS = '/home/mkhan31/ECE599_HW/Project3/2/'
 #%%
-label_train = np.load('trainlab.npy')[:20]
-label_test = np.load('testlab.npy')[:20]
+label_train = np.load('trainlab.npy')
+label_test = np.load('testlab.npy')
 parameters = { 'C':[1,2,5], 'gamma': 
               [0.01,0.02,0.05], 'kernel':['linear', 'rbf'] }
 #%% DAE
 #def dae_svm():
-dae_train = np.load('data/train_dae.npy')[:20]
-dae_test = np.load('data/test_dae.npy')[:20]
+dae_train = np.load('data/train_dae.npy')
+dae_test = np.load('data/test_dae.npy')
 
 svm_dae = svm.SVC(C=2.0, gamma = 0.05)
 #svm_dae = GridSearchCV(svr, parameters)
@@ -34,8 +34,8 @@ cnn_test = np.load('data/test_cnn.npy')
    
 
 #def cnn_svm():
-cnn_train = normalize(cnn_train)[:20]
-cnn_test = normalize(cnn_test)[:20]
+cnn_train = normalize(cnn_train)
+cnn_test = normalize(cnn_test)
 svm_cnn=svm.SVC(C=2.0)
 
 #svm_cnn = GridSearchCV(svr, parameters)
