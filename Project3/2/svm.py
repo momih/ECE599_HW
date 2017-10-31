@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score as acc
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import normalize
 import pickle
-PATHS = 'home/mkhan31/ECE599_HW/Project3/2/'
+PATHS = '/home/mkhan31/ECE599_HW/Project3/2/'
 #%%
 label_train = np.load('trainlab.npy')[:20]
 label_test = np.load('testlab.npy')[:20]
