@@ -323,7 +323,8 @@ class DenoisingAutoencoder(object):
 
         with tf.name_scope("cost"):
             if self.loss_func == 'cross_entropy':
-                self.cost = - tf.reduce_sum(self.input_data * tf.log(self.decode))
+                self.cost = -tf.reduce_sum(self.input_data * tf.log(self.decode) +   (1-self.input_data)*(tf.log(1-self.decode)))
+                #tf.reduce_sum(self.input_data * tf.log(self.decode))
                 _ = tf.summary.scalar("cross_entropy", self.cost)
 
             elif self.loss_func == 'mean_squared':
