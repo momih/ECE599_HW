@@ -15,7 +15,6 @@ import json
 import shutil
 import zipfile
 import argparse
-import requests
 import subprocess
 from tqdm import tqdm
 from six.moves import urllib
@@ -51,19 +50,6 @@ def download(url, dirpath):
   f.close()
   return filepath
 
-def download_file_from_google_drive(id, destination):
-  URL = "https://docs.google.com/uc?export=download"
-  session = requests.Session()
-
-  response = session.get(URL, params={ 'id': id }, stream=True)
-  token = get_confirm_token(response)
-
-  if token:
-    params = { 'id' : id, 'confirm' : token }
-    response = session.get(URL, params=params, stream=True)
-
-  save_response_content(response, destination)
-
 def get_confirm_token(response):
   for key, value in response.cookies.items():
     if key.startswith('download_warning'):
@@ -84,27 +70,6 @@ def unzip(filepath):
   with zipfile.ZipFile(filepath) as zf:
     zf.extractall(dirpath)
   os.remove(filepath)
-
-def download_celeb_a(dirpath):
-  data_dir = 'celebA'
-  if os.path.exists(os.path.join(dirpath, data_dir)):
-    print('Found Celeb-A - skip')
-    return
-
-  filename, drive_id  = "img_align_celeba.zip", "0B7EVK8r0v71pZjFTYXZWM3FlRnM"
-  save_path = os.path.join(dirpath, filename)
-
-  if os.path.exists(save_path):
-    print('[*] {} already exists'.format(save_path))
-  else:
-    download_file_from_google_drive(drive_id, save_path)
-
-  zip_dir = ''
-  with zipfile.ZipFile(save_path) as zf:
-    zip_dir = zf.namelist()[0]
-    zf.extractall(dirpath)
-  os.remove(save_path)
-  os.rename(os.path.join(dirpath, zip_dir), os.path.join(dirpath, data_dir))
 
 def _list_categories(tag):
   url = 'http://lsun.cs.princeton.edu/htbin/list.cgi?tag=' + tag
