@@ -9,7 +9,7 @@ import tensorflow as tf
 import pickle
 
 flags = tf.app.flags
-flags.DEFINE_integer("epoch", 8, "Epoch to train [25]")
+flags.DEFINE_integer("epoch", 1, "Epoch to train [25]")
 flags.DEFINE_float("learning_rate", 0.0002, "Learning rate of for adam [0.0002]")
 flags.DEFINE_float("beta1", 0.5, "Momentum term of adam [0.5]")
 flags.DEFINE_integer("train_size", np.inf, "The size of train images [np.inf]")
@@ -84,7 +84,7 @@ def main(_):
         raise Exception("[!] Train a model first, then run test mode")
       
     OPTION = 1
-    visualize(sess, dcgan, FLAGS, OPTION)
+    #visualize(sess, dcgan, FLAGS, OPTION)
     with open('loss_dcgan','wb') as f:
         pickle.dump(err_list, f)
 if __name__ == '__main__':
