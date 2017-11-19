@@ -16,7 +16,6 @@ import shutil
 import zipfile
 import argparse
 import subprocess
-from tqdm import tqdm
 from six.moves import urllib
 
 parser = argparse.ArgumentParser(description='Download dataset for DCGAN.')
@@ -59,8 +58,8 @@ def get_confirm_token(response):
 def save_response_content(response, destination, chunk_size=32*1024):
   total_size = int(response.headers.get('content-length', 0))
   with open(destination, "wb") as f:
-    for chunk in tqdm(response.iter_content(chunk_size), total=total_size,
-              unit='B', unit_scale=True, desc=destination):
+    for chunk in response.iter_content(chunk_size), total=total_size,
+              unit='B', unit_scale=True, desc=destination:
       if chunk: # filter out keep-alive new chunks
         f.write(chunk)
 
