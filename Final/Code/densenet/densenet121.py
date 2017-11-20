@@ -86,7 +86,7 @@ def densenet(img_rows, img_cols, lr=0.01, color_type=1, nb_dense_block=4, growth
     x = Activation('relu', name='relu'+str(final_stage)+'_blk')(x)
 
     x_fc = GlobalAveragePooling2D(name='pool'+str(final_stage))(x)
-    x_fc = Dense(3, name='fc6')(x_fc)
+    x_fc = Dense(2, name='fc6')(x_fc)
     x_fc = Activation('softmax', name='prob')(x_fc)
 
     model = Model(img_input, x_fc, name='densenet')

@@ -4,7 +4,7 @@ import numpy as np
 import random
 import os
   
-os.chdir('../data/xrays/')
+os.chdir('/home/momi/Documents/599/Final/Code/data/xrays')
 
 def to_categorical(y, num_classes=None):
     """Converts a class vector (integers) to binary class matrix.
@@ -34,7 +34,7 @@ def getxrays(filepath, label):
     files =  [x for x in os.listdir(filepath) if '.png' in x]
     images = []
     for i in tqdm(files):
-        xray = resize(imread(filepath+i, 0), (256,256))
+        xray = resize(imread(filepath+i, 0), (224,224))
         images.append(xray)
     x = np.array(images)
     y = np.full((len(images)), label)
