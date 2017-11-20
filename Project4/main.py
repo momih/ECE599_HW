@@ -84,7 +84,7 @@ def main(_):
         raise Exception("[!] Train a model first, then run test mode")
       
     OPTION = 1
-    #visualize(sess, dcgan, FLAGS, OPTION)
+    visualize(sess, dcgan, FLAGS, OPTION)
     with open('loss_dcgan','wb') as f:
         pickle.dump(err_list, f)
 if __name__ == '__main__':

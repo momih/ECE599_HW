@@ -54,9 +54,16 @@ Project3/p3.sublime-workspace
 Project3/3/a.py
 Project3/1/a.py
 Project3/1/analyse.py
-MedGAN/
 Project3/1/pickled (copy)/
 Project4/.spyproject/
 Project4/*.pyc
-
-
+Project4/2/
+Project4/checkpoint/
+Project4/data/
+Project4/logs/
+Project4/loss_dcgan
+Project4/samples/
+Final/Code/.spyproject/
+Final/Papers/
+Final/Code/data/
+*.pyc
