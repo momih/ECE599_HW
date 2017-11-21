@@ -10,9 +10,11 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', action="store", dest="epochs", default=1)
 parser.add_argument('--bsize', action="store", dest="bs", default=2)
+parser.add_argument('--n', action="store", dest="n", default=32)
 args = parser.parse_args()
 epochs = int(args.epochs)
 batch_size = int(args.bs)
+n = int(args.n)
 
 home_dir = os.environ['HOME']
 if 'momi' in home_dir:
@@ -34,12 +36,12 @@ except OSError:
 print('Data loading and defining generator')
 with np.load('data.npz') as data:
     # Training data
-    X_train = data['X_train'][:10]
-    Y_train = data['Y_train'][:10]
+    X_train = data['X_train'][:n]
+    Y_train = data['Y_train'][:n]
 
     # Validation data
-    X_valid = data['X_valid'][:10]
-    Y_valid = data['Y_valid'][:10]
+    X_valid = data['X_valid'][:n]
+    Y_valid = data['Y_valid'][:n]
 
 train_gen = ImageDataGenerator(featurewise_center=True,
                              featurewise_std_normalization=True,
