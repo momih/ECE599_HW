@@ -1,3 +1,4 @@
+from __future__ import print_function
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, CSVLogger
 from keras.preprocessing.image import ImageDataGenerator
 #from sklearn.metrics import accuracy_score, log_loss
@@ -7,8 +8,8 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--epochs', action="store", dest="epochs", default=50)
-parser.add_argument('--bsize', action="store", dest="bs", default=16)
+parser.add_argument('--epochs', action="store", dest="epochs", default=1)
+parser.add_argument('--bsize', action="store", dest="bs", default=2)
 args = parser.parse_args()
 epochs = args.epochs
 batch_size = args.bs
@@ -25,19 +26,20 @@ try:
     os.mkdir(models_dir)
     os.mkdir(log_dir)
 except OSError:
-    print "Directories already created"
+    print("Directories already created")
   
 # =============================================================================
 # Data loading and defining generator
 # =============================================================================
+print('Data loading and defining generator')
 with np.load('data.npz') as data:
     # Training data
-    X_train = data['X_train']
-    Y_train = data['Y_train']
+    X_train = data['X_train'][:10]
+    Y_train = data['Y_train'][:10]
 
     # Validation data
-    X_valid = data['X_valid']
-    Y_valid = data['Y_valid']
+    X_valid = data['X_valid'][:10]
+    Y_valid = data['Y_valid'][:10]
 
 train_gen = ImageDataGenerator(featurewise_center=True,
                              featurewise_std_normalization=True,
@@ -51,18 +53,21 @@ validation_gen.fit(X_valid)
 # =============================================================================
 # Define callbacks
 # =============================================================================
+print('Define callbacks')
 ckpt = ModelCheckpoint(models_dir + 'weights.{epoch:02d}-{val_loss:.2f}.hdf5',
                        verbose=1, period=5)
 early_stop = EarlyStopping(min_delta=0, patience=10, verbose=1)
 csvlog = CSVLogger(PATH + 'stats.csv', append=True)
 reducelr = ReduceLROnPlateau(verbose=1)
 
+print('\nLoad model')
 # =============================================================================
 # Load and train model
 # =============================================================================
 
 model = densenet(img_rows=224, img_cols=224, color_type=1,
                  num_classes=2, bn_type='brn', opt='adam')
+print('\n Train')
 
 model.fit_generator(train_gen.flow(X_train, Y_train, batch_size=batch_size),
                     steps_per_epoch=len(X_train) / batch_size,
