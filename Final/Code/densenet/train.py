@@ -10,8 +10,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', action="store", dest="epochs", default=50)
 parser.add_argument('--bsize', action="store", dest="bs", default=16)
 args = parser.parse_args()
-epochs = args.epochs
-batch_size = args.bs
+epochs = int(args.epochs)
+batch_size = int(args.bs)
 
 home_dir = os.environ['HOME']
 if 'momi' in home_dir:
