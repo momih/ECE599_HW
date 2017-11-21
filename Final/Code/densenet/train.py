@@ -8,7 +8,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', action="store", dest="epochs", default=50)
-parser.add_argument('--bsize', action="store", dest="bs", default=16)
+parser.add_argument('--bsize', action="store", dest="bs", default=8)
 args = parser.parse_args()
 epochs = int(args.epochs)
 batch_size = int(args.bs)
