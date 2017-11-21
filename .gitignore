@@ -67,3 +67,14 @@ Final/Code/.spyproject/
 Final/Papers/
 Final/Code/data/
 *.pyc
+Final/Code/densenet/data.npz
+Final/Code/densenet/stats.csv
+Final/Code/densenet/x.npy
+Final/Code/densenet/y.npy
+Project4/p1.csv
+Project4/p2.csv
+Project4/samples (3rd copy)/
+Project4/samples (another copy)/
+Project4/samples (copy)/
+Project4/samples_59/
+
