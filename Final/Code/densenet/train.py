@@ -68,7 +68,7 @@ reducelr = ReduceLROnPlateau(verbose=1, patience=3)
 model = densenet(img_rows=224, img_cols=224, color_type=1,
                  num_classes=2, bn_type='bn', opt='adam')
 
-pretrained_files = os.listdir('models/')
+pretrained_files = [x for x in os.listdir('models/') if 'weights_iter' in x]
 if len(pretrained_files) > 0:
     with open(models_dir + load_weights_name, 'rb') as f:
         loaded_weights = pickle.load(f)
