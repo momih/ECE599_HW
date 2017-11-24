@@ -86,8 +86,8 @@ def densenet(img_rows, img_cols, lr=0.01, color_type=1, nb_dense_block=4, growth
     x = Activation('relu', name='relu'+str(final_stage)+'_blk')(x)
 
     x_fc = GlobalAveragePooling2D(name='pool'+str(final_stage))(x)
-    x_fc = Dense(2, name='fc6')(x_fc)
-    x_fc = Activation('softmax', name='prob')(x_fc)
+    x_fc = Dense(1, name='fc6')(x_fc)
+    x_fc = Activation('sigmoid', name='prob')(x_fc)
 
     model = Model(img_input, x_fc, name='densenet')
 
@@ -96,7 +96,7 @@ def densenet(img_rows, img_cols, lr=0.01, color_type=1, nb_dense_block=4, growth
         optim = SGD(lr=lr, decay=0.01, momentum=0.9, nesterov=True)
     elif opt == 'adam':
         optim = Adam(lr=lr, decay=0.01)
-    model.compile(optimizer=optim, loss='categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=optim, loss='binary_crossentropy', metrics=['binary_accuracy'])
 
     return model
 
