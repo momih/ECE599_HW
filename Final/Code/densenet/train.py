@@ -1,7 +1,6 @@
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, CSVLogger
 from keras.preprocessing.image import ImageDataGenerator
 #from sklearn.metrics import accuracy_score, log_loss
-from sklearn.model_selection import train_test_split
 import keras.backend as K
 from densenet121 import densenet
 import numpy as np
@@ -44,8 +43,6 @@ with np.load('data.npz') as data:
     # Training data
     X_train = data['X_train'][:n]
     Y_train = data['Y_train'][:n]
-    X_train = np.concatenate((X_train,data['X_test']))
-    Y_train = np.concatenate((Y_train,data['Y_test']))
 
     # Validation data
     X_valid = data['X_valid']
@@ -53,8 +50,6 @@ with np.load('data.npz') as data:
 
 Y_train = np.argmax(Y_train, axis=1)
 Y_valid = np.argmax(Y_valid, axis=1)
-
-X_train, X_test, Y_train, Y_test = train_test_split(X_train, Y_train, test_size=0.35, random_state=100)
 
 train_gen = ImageDataGenerator(featurewise_center=True,
                              featurewise_std_normalization=True,
