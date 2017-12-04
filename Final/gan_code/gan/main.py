@@ -21,10 +21,10 @@ parser.add_argument('--beta1', dest='beta1', type=float, default=0.5, help='mome
 parser.add_argument('--opt', dest='opt', default='adam', help='adam or rms')
 parser.add_argument('--phase', dest='phase', default='train', help='train, test')
 
-parser.add_argument('--save_freq', dest='save_freq', type=int, default=550,
+parser.add_argument('--save_freq', dest='save_freq', type=int, default=275,
                     help='save a model every save_epoch_freq steps (does not overwrite previously saved models)')
 
-parser.add_argument('--sample_freq', dest='sample_freq', type=int, default=550,
+parser.add_argument('--sample_freq', dest='sample_freq', type=int, default=275,
                     help='save the latest model every latest_freq steps (overwrites the previous latest model)')
 
 parser.add_argument('--print_freq', dest='print_freq', type=int, default=687,
