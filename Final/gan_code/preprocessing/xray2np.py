@@ -1,7 +1,6 @@
 from cv2 import imread, resize
 from tqdm import tqdm
 import numpy as np
-import random
 import os
   
 os.chdir('/home/momi/Documents/599/Final/Code/data/xrays')

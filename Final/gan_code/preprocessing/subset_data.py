@@ -38,11 +38,11 @@ shadow_df = df_orig[df_orig['label'] == 'shadow'].sort_values('id').reset_index(
 healthy_df = df_orig[df_orig['label'] == 'healthy'].sort_values('id').reset_index(drop=True)
 
 # random samples from both df
-shadow_df = shadow_df.sample(n=8000, random_state=10)
-healthy_df = healthy_df.sample(n=8000, random_state=10)
+shadow_df = shadow_df.sample(n=1000, random_state=10)
+healthy_df = healthy_df.sample(n=1000, random_state=10)
 
-shadow_df.progress_apply(lambda x: copy('../data/uncompressed/images/' + x['filename'], '../data/xrays/shadow/'), 1)
-healthy_df.progress_apply(lambda x: copy('../data/uncompressed/images/' + x['filename'], '../data/xrays/healthy/'), 1)
+shadow_df.progress_apply(lambda x: copy('../data/uncompressed/images/' + x['filename'], '../data/xrays/test_shadow/'), 1)
+healthy_df.progress_apply(lambda x: copy('../data/uncompressed/images/' + x['filename'], '../data/xrays/test_healthy/'), 1)
 
 shadow_df.to_csv('../data/xrays/shadow.csv')
 healthy_df.to_csv('../data/xrays/healthy.csv')

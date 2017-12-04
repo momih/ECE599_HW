@@ -19,9 +19,9 @@ test_gen = ImageDataGenerator(featurewise_center=True,
 test_gen.fit(X_test)
 
 model = densenet(img_rows=224, img_cols=224, color_type=1,
-                 num_classes=2, bn_type='brn', opt='adam')
+                 num_classes=2, bn_type='bn', opt='adam')
 
-with open('models/weights_iter_3', 'rb') as f:
+with open('models/weights_iter_2', 'rb') as f:
     model.set_weights(pickle.load(f))
 
 print('Loaded weights')

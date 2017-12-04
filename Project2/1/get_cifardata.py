@@ -110,7 +110,7 @@ def get_train():
             y = one_hot(cifar_dict['labels'])
             images = numpy.concatenate((images, data), axis=0)
             labels = numpy.concatenate((labels, y), axis=0)
-    return DataSet(images, labels)
+    return DataSet(images, labels])
 
 
 def get_test():

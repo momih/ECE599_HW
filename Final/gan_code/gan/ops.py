@@ -1,13 +1,9 @@
-import math
-import numpy as np 
-import tensorflow as tf
-
 from tensorflow.python.framework import ops
+import tensorflow as tf
 
 from utils import *
 
 class batch_norm(object):
-            # h1 = lrelu(tf.contrib.layers.batch_norm(conv2d(h0, self.df_dim*2, name='d_h1_conv'),decay=0.9,updates_collections=None,epsilon=0.00001,scale=True,scope="d_h1_conv"))
     def __init__(self, epsilon=1e-5, momentum = 0.9, name="batch_norm"):
         with tf.variable_scope(name):
             self.epsilon = epsilon
@@ -16,6 +12,8 @@ class batch_norm(object):
 
     def __call__(self, x, train=True):
         return tf.contrib.layers.batch_norm(x, decay=self.momentum, updates_collections=None, epsilon=self.epsilon, scale=True, scope=self.name)
+
+
 
 def binary_cross_entropy(preds, targets, name=None):
     """Computes binary cross entropy given `preds`.
@@ -35,11 +33,13 @@ def binary_cross_entropy(preds, targets, name=None):
         return tf.reduce_mean(-(targets * tf.log(preds + eps) +
                               (1. - targets) * tf.log(1. - preds + eps)))
 
+
 def conv_cond_concat(x, y):
     """Concatenate conditioning vector on feature map axis."""
     x_shapes = x.get_shape()
     y_shapes = y.get_shape()
     return tf.concat([x, y*tf.ones([x_shapes[0], x_shapes[1], x_shapes[2], y_shapes[3]])], 3)
+
 
 def conv2d(input_, output_dim, 
            k_h=5, k_w=5, d_h=2, d_w=2, stddev=0.02,
@@ -53,6 +53,7 @@ def conv2d(input_, output_dim,
         conv = tf.reshape(tf.nn.bias_add(conv, biases), conv.get_shape())
 
         return conv
+
 
 def deconv2d(input_, output_shape,
              k_h=5, k_w=5, d_h=2, d_w=2, stddev=0.02,
@@ -81,7 +82,11 @@ def deconv2d(input_, output_shape,
        
 
 def lrelu(x, leak=0.2, name="lrelu"):
-  return tf.maximum(x, leak*x)
+    try:
+        return tf.nn.leaky_relu(x, alpha=leak, name=name)
+    except AttributeError:
+        return tf.maximum(x, leak*x)
+
 
 def linear(input_, output_size, scope=None, stddev=0.02, bias_start=0.0, with_w=False):
     shape = input_.get_shape().as_list()
@@ -90,7 +95,7 @@ def linear(input_, output_size, scope=None, stddev=0.02, bias_start=0.0, with_w=
         matrix = tf.get_variable("Matrix", [shape[1], output_size], tf.float32,
                                  tf.random_normal_initializer(stddev=stddev))
         bias = tf.get_variable("bias", [output_size],
-            initializer=tf.constant_initializer(bias_start))
+                               initializer=tf.constant_initializer(bias_start))
         if with_w:
             return tf.matmul(input_, matrix) + bias, matrix, bias
         else:
