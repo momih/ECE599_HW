@@ -7,7 +7,7 @@ from GAN_masked import InfectGAN
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('--dataset_name', dest='dataset_name', default='xrays', help='name of the dataset')
 parser.add_argument('--epoch', dest='epoch', type=int, default=5, help='# of epoch')
-parser.add_argument('--batch_size', dest='batch_size', type=int, default=8, help='# images in batch')
+parser.add_argument('--batch_size', dest='batch_size', type=int, default=10, help='# images in batch')
 parser.add_argument('--train_size', dest='train_size', type=int, default=1e8, help='# images used to train')
                     
 parser.add_argument('--gf_dim', dest='gf_dim', type=int, default=64, help='# of gen filters in first conv layer')
@@ -21,13 +21,13 @@ parser.add_argument('--beta1', dest='beta1', type=float, default=0.5, help='mome
 parser.add_argument('--opt', dest='opt', default='adam', help='adam or rms')
 parser.add_argument('--phase', dest='phase', default='train', help='train, test')
 
-parser.add_argument('--save_freq', dest='save_freq', type=int, default=11000,
+parser.add_argument('--save_freq', dest='save_freq', type=int, default=550,
                     help='save a model every save_epoch_freq steps (does not overwrite previously saved models)')
 
-parser.add_argument('--sample_freq', dest='sample_freq', type=int, default=5500,
+parser.add_argument('--sample_freq', dest='sample_freq', type=int, default=550,
                     help='save the latest model every latest_freq steps (overwrites the previous latest model)')
 
-parser.add_argument('--print_freq', dest='print_freq', type=int, default=50,
+parser.add_argument('--print_freq', dest='print_freq', type=int, default=687,
                     help='print the debug information every print_freq iterations')
 
 parser.add_argument('--continue_train', dest='continue_train', type=bool, default=False,
