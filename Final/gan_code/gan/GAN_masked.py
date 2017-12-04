@@ -227,7 +227,7 @@ class InfectGAN(object):
 
         self.saver = tf.train.Saver()
         self.tf_merged_summaries = tf.summary.merge_all()
-        self.writer = tf.summary.FileWriter(self.checkpoint_dir, self.sess.graph)
+        self.writer = tf.summary.FileWriter('./logs/', self.sess.graph)
 
     def discriminator(self, image, reuse=False):
         with tf.variable_scope("discriminator") as scope:
@@ -506,9 +506,7 @@ class InfectGAN(object):
 
             for idx in xrange(0, batch_idxs):
                 print("\nStarting step {:4d} of epoch {:2d}".format(idx, epoch))
-                # batch_files = data[idx*self.batch_size:(idx+1)*self.batch_size]
-                # batch = [load_data(batch_file) for batch_file in batch_files]
-                # batch_images = np.array(batch).astype(np.float32)[:, :, :, None]
+              
 
                 print('\nGetting batches')
                 normal_batch_togen = normal.next_batch(self.batch_size)
@@ -545,7 +543,11 @@ class InfectGAN(object):
 
                 # Save model after half epoch
                 if np.mod(counter, save_step) == 0:
+                    print('\nSaving model and metadata\n')
                     self.save(args.checkpoint_dir, counter)
+                    run_metadata = tf.RunMetadata()
+                    self.writer.add_run_metadata(run_metadata, 'step%d' % idx)
+               
 
     def save(self, checkpoint_dir, step):
         model_name = "GAN_masked"
