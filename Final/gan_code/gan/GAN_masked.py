@@ -53,6 +53,7 @@ class InfectGAN(object):
 
         self.gf_dim = gf_dim
         self.df_dim = df_dim
+        self.checkpoint_dir = checkpoint_dir
 
         self.input_c_dim = input_c_dim
         self.output_c_dim = output_c_dim
@@ -226,7 +227,7 @@ class InfectGAN(object):
 
         self.saver = tf.train.Saver()
         self.tf_merged_summaries = tf.summary.merge_all()
-        self.writer = tf.summary.FileWriter("./logs", self.sess.graph)
+        self.writer = tf.summary.FileWriter(self.checkpoint_dir, self.sess.graph)
 
     def discriminator(self, image, reuse=False):
         with tf.variable_scope("discriminator") as scope:
@@ -529,16 +530,14 @@ class InfectGAN(object):
                                                    feed_dict=input_feed_dict)
                 self.writer.add_summary(summary_str, counter)
 
-                errD_fake = self.d_loss_fake.eval(session=self.sess, feed_dict=input_feed_dict)
-                errD_real = self.d_loss_real.eval(session=self.sess, feed_dict=input_feed_dict)
                 errD = self.d_loss.eval(session=self.sess, feed_dict=input_feed_dict)
 
                 errG = self.g_loss.eval(session=self.sess, feed_dict=input_feed_dict)
 
                 counter += 1
-                print("\nEpoch: [%2d] [%4d/%4d] time: %4.4f, Disc loss: %.8f + %.8f = %.8f, Gen loss: %.8f"
+                print("\nEpoch: [%2d] [%4d/%4d] time: %4.4f, Disc loss: %.8f, Gen loss: %.8f"
                     % (epoch, idx, batch_idxs,
-                       time.time() - start_time, errD_real, errD_fake, errD, errG))
+                       time.time() - start_time, errD, errG))
 
                 # See sample images every sample_step steps
                 if np.mod(counter, sample_step) == 0:
