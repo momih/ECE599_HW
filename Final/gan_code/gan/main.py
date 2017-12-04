@@ -1,6 +1,8 @@
 import tensorflow as tf
 import argparse
 import os
+from GAN_masked import InfectGAN
+
 
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('--dataset_name', dest='dataset_name', default='xrays', help='name of the dataset')
@@ -42,10 +44,6 @@ parser.add_argument('--gan_type', dest='gan_type', default='masked', help='which
 
 args = parser.parse_args()
 
-if args.gan_type == "masked":
-    from GAN_masked import InfectGAN
-else:
-    from GAN_extracted import InfectGAN
 
 if not os.path.exists(args.checkpoint_dir):
     os.makedirs(args.checkpoint_dir)
@@ -63,7 +61,7 @@ with tf.Session() as sess:
                       gf_dim=args.gf_dim, infect_filters=args.infect_filters)
 
 if args.phase == 'train':
-    model.train(args, sample_step=args.sample_freq, save_step=20)
+    model.train(args, sample_step=args.sample_freq, save_step=args.save_freq)
 #else:
 #            model.test(args)
 
