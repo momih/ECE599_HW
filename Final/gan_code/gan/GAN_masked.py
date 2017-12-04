@@ -453,7 +453,7 @@ class InfectGAN(object):
 
         # Save the generated images
         save_images(samples, [nrows, self.batch_size//nrows], "./{}/train_{:02d}_{:04d}.png".format(sample_dir, epoch, idx))
-        print('Sampling')
+        print('Samples saved')
         
     def train(self, args, sample_step=20, save_step=200):
         """
@@ -539,14 +539,14 @@ class InfectGAN(object):
 
                 # See sample images every sample_step steps
                 if np.mod(counter, sample_step) == 0:
+                    print('\nSampling images from model\n')
                     self.sample_model(args.sample_dir, epoch, idx)
 
                 # Save model after half epoch
                 if np.mod(counter, save_step) == 0:
-                    print('\nSaving model and metadata\n')
+                    print('\nSaving model\n')
                     self.save(args.checkpoint_dir, counter)
-                    run_metadata = tf.RunMetadata()
-                    self.writer.add_run_metadata(run_metadata, 'step%d' % idx)
+        
                
 
     def save(self, checkpoint_dir, step):
