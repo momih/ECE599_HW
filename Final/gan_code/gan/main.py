@@ -6,12 +6,12 @@ from GAN_masked import InfectGAN
 
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('--dataset_name', dest='dataset_name', default='xrays', help='name of the dataset')
-parser.add_argument('--epoch', dest='epoch', type=int, default=200, help='# of epoch')
+parser.add_argument('--epoch', dest='epoch', type=int, default=5, help='# of epoch')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=8, help='# images in batch')
 parser.add_argument('--train_size', dest='train_size', type=int, default=1e8, help='# images used to train')
                     
-parser.add_argument('--gf_dim', dest='gf_dim', type=int, default=32, help='# of gen filters in first conv layer')
-parser.add_argument('--infect_filters', dest='infect_filters', type=int, default=8, help='# of gen filters in first conv layer of infector')                
+parser.add_argument('--gf_dim', dest='gf_dim', type=int, default=64, help='# of gen filters in first conv layer')
+parser.add_argument('--infect_filters', dest='infect_filters', type=int, default=16, help='# of gen filters in first conv layer of infector')                
 parser.add_argument('--ndf', dest='ndf', type=int, default=64, help='# of discri filters in first conv layer')
                     
 parser.add_argument('--input_nc', dest='input_nc', type=int, default=1, help='# of input image channels')
