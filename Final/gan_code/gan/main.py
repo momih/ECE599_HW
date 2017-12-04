@@ -64,8 +64,8 @@ with tf.Session() as sess:
 
 if args.phase == 'train':
     model.train(args, sample_step=args.sample_freq, save_step=20)
-#        else:
+#else:
 #            model.test(args)
-#
-# if __name__ == '__main__':
-#    tf.app.run()
+
+if __name__ == '__main__':
+    tf.app.run()
